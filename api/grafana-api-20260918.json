@@ -13215,7 +13215,9 @@
           "state": {
             "description": "state",
             "enum": [
-              "[unprocessed active suppressed]"
+              "unprocessed",
+              "active",
+              "suppressed"
             ],
             "type": "string"
           }
@@ -15825,6 +15827,85 @@
         "summary": "Revoke auth token for user.",
         "tags": [
           "admin_users"
+        ]
+      }
+    },
+    "/alertmanager/grafana/api/v2/alerts": {
+      "get": {
+        "description": "get alertmanager alerts",
+        "operationId": "RouteGetGrafanaAMAlerts",
+        "parameters": [
+          {
+            "description": "Show active alerts",
+            "in": "query",
+            "name": "active",
+            "schema": {
+              "default": true,
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Show silenced alerts",
+            "in": "query",
+            "name": "silenced",
+            "schema": {
+              "default": true,
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Show inhibited alerts",
+            "in": "query",
+            "name": "inhibited",
+            "schema": {
+              "default": true,
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "A list of matchers to filter alerts by",
+            "in": "query",
+            "name": "filter",
+            "schema": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "description": "A regex matching receivers to filter alerts by",
+            "in": "query",
+            "name": "receiver",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/gettableAlerts"
+                }
+              }
+            },
+            "description": "gettableAlerts"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            },
+            "description": "ValidationError"
+          }
+        },
+        "tags": [
+          "alertmanager"
         ]
       }
     },
